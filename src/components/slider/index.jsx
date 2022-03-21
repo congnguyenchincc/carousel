@@ -11,8 +11,8 @@ import "slick-carousel/slick/slick-theme.css";
 import { styled, useTheme } from '@mui/material/styles';
 
 const BoxStyle = styled(Box)(({ theme }) => ({
-    width: 400,
-    paddingLeft: 50,
+    maxWidth: 347,
+    margin: '24px auto',
     position: 'relative',
     '&:after': {
         top: 0,
@@ -34,14 +34,15 @@ const BoxStyle = styled(Box)(({ theme }) => ({
         position: 'absolute',
         width: 42.6667,
         backgroundImage: 'linear-gradient(to left, rgba(33, 43, 54, 0) 0%, rgb(33, 43, 54) 100%)',
-        boxSizing: 'inherit',
-        left: 49
+        left: 0,
     }
 }))
 
-const Image = styled('img')(({ theme }) => ({
-    width: 58,
-    height: 60,
+const Image = styled('img')(({ theme, selected, index }) => ({
+    borderRadius: 12,
+    width: selected == index ? 56: 64,
+    height: selected == index ? 56: 64,
+    border: selected == index ? '4px solid green' : ''
 }))
 
 const AsNavFor = props => {
@@ -52,18 +53,22 @@ const AsNavFor = props => {
     const [selected, setSelected] = useState(false)
     const [images, setImages] = useState([
         'https://picsum.photos/200/300',
-        'https://picsum.photos/id/237/200/300',
-        'https://picsum.photos/seed/picsum/200/300',
-        'https://picsum.photos/200/300?grayscale',
-        'https://picsum.photos/200/300/?blur',
-        'https://picsum.photos/id/870/200/300?grayscale&blur=2',
+        'https://picsum.photos/200/300',
+        'https://picsum.photos/200/300',
+        'https://picsum.photos/200/300',
+        'https://picsum.photos/200/300',
+        'https://picsum.photos/200/300',
+        'https://picsum.photos/id/238/200/300',
+        'https://picsum.photos/id/239/200/300',
+        'https://picsum.photos/id/240/200/300',
+        'https://picsum.photos/id/240/200/300',
         'https://picsum.photos/id/238/200/300',
         'https://picsum.photos/id/239/200/300',
         'https://picsum.photos/id/240/200/300',
         'https://picsum.photos/id/240/200/300'
     ])
     return (
-        <div style={{ width: 500, padding: 200 }}>
+        <div>
             <h2>Slider Syncing (AsNavFor)</h2>
             <h4>First Slider</h4>
             <Slider
@@ -73,7 +78,7 @@ const AsNavFor = props => {
             >
                 {
                     images.map((image, index) => (
-                        <img key={index} src={image} width="300" height="400" />
+                        <img key={index} src={image}/>
                     ))
                 }
             </Slider>
@@ -82,7 +87,7 @@ const AsNavFor = props => {
                 <Slider
                     asNavFor={nav1}
                     ref={slider => setNav2(slider)}
-                    slidesToShow={5}
+                    slidesToShow={3}
                     swipeToSlide={true}
                     focusOnSelect={true}
                     centerMode={true}
@@ -90,17 +95,23 @@ const AsNavFor = props => {
                 >
                     {
                         images.map((image, index) => (
-                            <Grid container spacing={2}>
-                                <Grid item >
-                                    <img key={index} src={image} style={{
-                                        borderRadius: 12,
-                                        border: selected == index ? '5px solid green' : '',
-                                        width: '100%',
-                                        height: '100%'
-                                    }}
-                                    />
-                                </Grid>
-                            </Grid>
+                            <Box style={{
+                                width: '100%',
+                                display: 'inline-block'
+                            }}>
+                                <Box component="span" style={{
+                                    lineHeight: 0,
+                                    display: 'block',
+                                    overflow: 'hidden',
+                                    width: 64,
+                                    height: 64,
+                                    borderRadius: 12,
+                                    cursor: 'pointer',
+                                    border: '3px solid primary'
+                                }}>
+                                    <Image src={image} index={index} selected={selected}/>
+                                </Box>
+                            </Box>
                         ))
                     }
                 </Slider>
